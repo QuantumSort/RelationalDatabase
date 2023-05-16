@@ -2,46 +2,39 @@ package com.example.QuantumSort.models;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
+import javax.management.relation.Role;
+import java.util.Collection;
 
-@Entity
-@Table(name = "application_users")
-public class AppUser {
+@MappedSuperclass
+public class ApplicationUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private String firstName;
-    private String lastName;
-    private String userName;
-    private boolean isAgent;
-    private LocalDate dateOfBirth;
+    protected long id;
+    protected String userName;
+    protected String password;
+    protected String firstName;
+    protected String lastName;
+    protected boolean isAgent;
+
+
+    public boolean isAgent() {
+        return false;
+    }
+
+    public void setAgent(boolean agent) {
+        isAgent = false;
+    }
 
     @Override
     public String toString() {
-        return "AppUser{" +
+        return "ApplicationUser{" +
                 "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", userName='" + userName + '\'' +
                 ", isAgent=" + isAgent +
-                ", dateOfBirth=" + dateOfBirth +
                 '}';
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public LocalDate getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
     }
 
     public String getFirstName() {
@@ -60,6 +53,14 @@ public class AppUser {
         this.lastName = lastName;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public String getUserName() {
         return userName;
     }
@@ -68,11 +69,11 @@ public class AppUser {
         this.userName = userName;
     }
 
-    public boolean isAgent() {
-        return isAgent;
+    public String getPassword() {
+        return password;
     }
 
-    public void setAgent(boolean agent) {
-        isAgent = agent;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
