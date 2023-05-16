@@ -1,14 +1,6 @@
 package com.example.QuantumSort.models;
 
-import jakarta.persistence.*;
-
-@Entity
-@Table(name = "listings")
-public class Listing {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-    private String address;
+public class Features {
     private int beds;
     private int bath;
     private int lotSize;
@@ -22,9 +14,8 @@ public class Listing {
 
     @Override
     public String toString() {
-        return "Listing{" +
-                "address='" + address + '\'' +
-                ", beds=" + beds +
+        return "Features{" +
+                "beds=" + beds +
                 ", bath=" + bath +
                 ", lotSize=" + lotSize +
                 ", sqFt=" + sqFt +
@@ -35,14 +26,6 @@ public class Listing {
                 ", hasPool=" + hasPool +
                 ", isActive=" + isActive +
                 '}';
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public int getBeds() {
