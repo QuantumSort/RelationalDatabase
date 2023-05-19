@@ -10,7 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-
+import java.util.Optional;
 import java.util.List;
 
 @Controller
@@ -33,11 +33,30 @@ public class ListingController {
         return "listing";
     }
 
+    @GetMapping("/{id}/details")
+    public String viewListing(@PathVariable("id") Long id, Model model) {
+        Optional<Listing> listing = listingRepository.findById(id);
+        if (listing.isPresent()) {
+            model.addAttribute("listing", listing.get());
+            return "listingDetails";
+        } else {
+            return "error";
+        }
+    }
+
     @GetMapping("/show")
     public String showListings(Model model) {
         List<Listing> listings = listingRepository.findAll();
         model.addAttribute("listings", listings);
         return "listings";
+    }
+
+
+    @GetMapping("/listingDetails/{id}")
+    public String showListingDetails(@PathVariable("id") Long id, Model model) {
+        Listing listing = listingRepository.findById(id).orElse(null);
+        model.addAttribute("listing", listing);
+        return "listingDetails";
     }
 
     @PostMapping("/new")
@@ -49,6 +68,30 @@ public class ListingController {
             return "redirect:/login";
         }
     }
+
+    @GetMapping("/search")
+    public String searchForm() {
+        return "search";
+    }
+
+    @GetMapping("/searchResults")
+    public String search(@RequestParam String query, Model model) {
+        List<Listing> listings = listingRepository.search(query);
+        model.addAttribute("listings", listings);
+        return "searchResults";
+    }
+
+      @DeleteMapping("/delete/{id}")
+    public String deleteListing(@PathVariable("id") Long id, @AuthenticationPrincipal ApplicationUser user) {
+        if (user.isAgent()) {
+            listingRepository.deleteById(id);
+            return "redirect:/listings/show";
+        } else {
+            return "redirect:/login";
+        }
+    }
+
+
 
     @PostMapping("/{id}")
     public ResponseEntity<Listing> updateListing(@PathVariable Long id, @RequestBody Listing updatedListing, @AuthenticationPrincipal ApplicationUser user) {
