@@ -68,6 +68,11 @@ public class ListingController {
             return "redirect:/login";
         }
     }
+    @GetMapping("/new")
+    public String newListingForm(Model model) {
+        model.addAttribute("newListing", new Listing());
+        return "newListing";
+    }
 
     @GetMapping("/search")
     public String searchForm() {
